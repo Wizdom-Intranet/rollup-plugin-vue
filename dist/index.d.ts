@@ -87,6 +87,7 @@ export interface VuePluginOptions {
      * VuePlugin({ exposeFilename: true })
      * ```
      */
+    useSpfxThemeLoading?: boolean;
     exposeFilename?: boolean;
     compiler?: VueTemplateCompiler;
     compilerParseOptions?: VueTemplateCompilerParseOptions;

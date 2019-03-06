@@ -256,7 +256,16 @@ function vue(opts = {}) {
                     ? {
                         code: `
             export * from '${createVuePartRequest(filename, descriptor.script.lang || 'js', 'script')}'
+            ${opts.useSpfxThemeLoading === true
+                            ? `import { loadStyles } from '@microsoft/load-themed-styles'`
+                            : ''}
             import script from '${createVuePartRequest(filename, descriptor.script.lang || 'js', 'script')}'
+            ${opts.useSpfxThemeLoading === true
+                            ? `script.beforeCreate = () => {loadStyles(\`${input.styles
+                                .map((style) => style.code)
+                                .join('\n')}
+                    \`)}`
+                            : ''}
             export default script
             ${exposeFilename
                             ? `
@@ -268,6 +277,9 @@ function vue(opts = {}) {
             `
                     }
                     : { code: '' };
+                if (opts.useSpfxThemeLoading === true) {
+                    input.styles = [];
+                }
                 if (shouldExtractCss) {
                     input.styles = input.styles
                         .map((style, index) => {
